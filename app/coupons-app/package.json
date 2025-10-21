@@ -1,0 +1,22 @@
+{
+  "name": "coupons-app",
+  "version": "0.0.1",
+  "description": "EComm SAP Coupons Map",
+  "keywords": [
+    "ui5",
+    "openui5",
+    "sapui5"
+  ],
+  "main": "webapp/index.html",
+  "dependencies": {},
+  "devDependencies": {
+    "@ui5/cli": "^4.0.16",
+    "@sap/ux-ui5-tooling": "1"
+  },
+  "scripts": {
+    "deploy-config": "npx -p @sap/ux-ui5-tooling fiori add deploy-config cf",
+    "start": "fiori run",
+    "build": "fiori build",    
+    "build:cf": "ui5 build preload --clean-dest --config ui5.yaml --include-task=generateCachebusterInfo"
+  }
+}

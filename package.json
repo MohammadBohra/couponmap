@@ -1,0 +1,53 @@
+{
+  "name": "couponmap",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "dependencies": {
+    "@cap-js/hana": "^2",    
+    "@sap-cloud-sdk/http-client": "^4.1.2",
+    "@sap-cloud-sdk/resilience": "^4.1.2",
+    "@sap/cds": "^9",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2",
+    "@sap/cds-dk": "^9",
+    "cds-plugin-ui5": "^0.13.0"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-coupons-app": "cds watch --open ro.dtc.couponsapp/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "cds": {
+    "requires": {
+      "connectivity": true,
+      "destination": true,
+      "uaa": {
+        "kind": "xsuaa"
+      },
+      "db": {
+        "kind": "hana",
+        "model": [
+          "db",
+          "srv"
+        ]        
+      },
+      "BigCommerceAPI": {
+        "kind": "rest",
+        "credentials": {
+          "url": "https://api.bigcommerce.com/stores/feljpfgnzj/v2",
+          "headers": {
+            "X-Auth-Token": "iby59do5p3rrwbxyxu3egm8t36awgnu"
+          }
+        }
+      }
+    }
+  },
+  "private": true,
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/coupons-app"
+  ]
+}

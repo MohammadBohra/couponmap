@@ -1,0 +1,13 @@
+APIName;BigCommCoupon;SAPCoupon;SKU;MaxQuan;IsActive;StartDate;EndDate;Description
+WELCOME10;WelcomeOffer;SAP001;SKU123;100;true;2025-01-01;2025-12-31;Welcome offer for first-time users
+FESTIVE50;FestiveBonus;SAP002;SKU456;50;true;2025-10-01;2025-10-31;Festive season flat 50% discount
+CLEARANCE20;ClearanceSale;SAP003;SKU789;200;true;2025-11-01;2025-11-15;20% off on clearance stock
+SUMMER15;SummerPromo;SAP004;SKU321;300;false;2025-04-01;2025-04-30;15% off on all summer wear
+VIPACCESS;VIPExclusive;SAP005;SKU654;10;true;2025-06-01;2025-06-15;Exclusive access for VIP customers
+HOLIDAY30;HolidaySpecial;SAP006;SKU987;150;true;2025-12-15;2025-12-31;Holiday season 30% discount
+SPRING5;SpringDeal;SAP007;SKU654;75;true;2025-03-01;2025-03-31;Spring special 5% off
+BLACKFRIDAY;BlackFridayMega;SAP008;SKU111;500;true;2025-11-25;2025-11-25;Black Friday mega deal
+LOYALTY10;LoyaltyReward;SAP009;SKU222;250;true;2025-01-01;2025-12-31;10% off for loyalty members
+FLASHSALE;FlashSale;SAP010;SKU333;100;false;2025-09-01;2025-09-05;Limited time flash sale
+WELCOME11;Test;SAP001;SKU123;100;true;2025-01-01;2025-12-31;Welcome offer for first-time users
+
