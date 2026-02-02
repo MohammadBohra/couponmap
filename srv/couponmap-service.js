@@ -1,87 +1,90 @@
 const cds = require('@sap/cds');
-const axios = require("axios");
+const fetch = require('node-fetch'); // Node >=18 has fetch globally
 
-module.exports = cds.service.impl(async function() {
+module.exports = cds.service.impl(async function () {    
+    const BigCommerceAPI = await cds.connect.to("BigCommerceAPI");   // <== destination client
 
-const BigCommerce = await cds.connect.to('BigCommerceAPI')
+    const { Stores, CouponsMap } = cds.entities('CouponsMapService');
+    // -------------------------
+    // Authorization for Coupons
+    // -------------------------
+    this.before(['CREATE', 'UPDATE', 'DELETE'], 'CouponsMap', (req) => {
+        if (!req.user.is('Admin')) {
+            req.reject(403, 'You are not authorized to modify coupon data.');
+        }
+    });
 
-  const { BCCoupons } = this.entities;
+    // -------------------------
+    // Feature Control for Fiori
+    // -------------------------
+    this.on('READ', 'FeatureControl', async (req) => {
+        const isAdmin = req.user.is('Admin');
+        const isITAdmin = req.user.is('BigCommStAdmin');
+        return [{
+        operationHidden: !isAdmin,
+        itadmin: !isITAdmin
+    }]
+    });
 
-  this.on('READ', 'BCCoupons', async req => {
-    try {
-      const coupons = await BigCommerce.send({
-        method: 'GET',
-        path: '/coupons'
-      })
+    // -------------------------
+    // BCCoupons: Fetch from BigCommerce
+    // -------------------------
+    this.on('READ', 'BCCoupons', async (req) => {
+        try {
+            const where = req.query?.SELECT?.where;
+            let APIName;
 
-      return coupons.map(c => ({
-        id: c.id,
-        name: c.name,
-        code: c.code,        
-        type: c.type,
-        enabled: c.enabled        
-      }))
-    } catch (e) {
-      console.error('BigCommerce API error:', e)
-      req.error(500, 'Failed to fetch coupons from BigCommerce')
-    }
-  })
+            if (where) {
+                const apiNameIndex = where.findIndex(c => c.ref && c.ref[0] === 'APIName');
+                if (apiNameIndex !== -1 && where[apiNameIndex + 2]?.val) {
+                    APIName = where[apiNameIndex + 2].val;
+                }
+            }
+
+            if (!APIName) {
+                return req.reject(400, 'Please provide an APIName filter.');
+            }
+
+            // Look up StoreHash based on APIName (which maps to WebServiceID)
+            const store = await SELECT.one.from(Stores).where({ APIName: APIName });            
+            if (!store) {
+                return req.reject(404, `No store found for APIName '${APIName}'`);
+            }
+
+            
+
+            const storeHash = store.StoreHash;  // dynamic
+            const authToken = store.AuthToken;  // dynamic
+
+            const response = await BigCommerceAPI.send({
+            method: "GET",
+            path: `/stores/${storeHash}/v2/coupons`,
+            headers: {
+                "X-Auth-Token": authToken,
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+            });
+            if (!response) {
+                const errorText = await response.text();
+                console.error("BigCommerce API Error:", errorText);
+                return;
+            }
+
+            // Map BigCommerce coupons to CAP entity
+            return response.map(coupon => ({
+                id: coupon.id,
+                BigCommCoupon: coupon.name,
+                BigCommCode: coupon.code,
+                type: coupon.type,
+                enabled: coupon.enabled,
+                StoreHash: store.StoreHash,
+                APIName: store.APIName
+            }));
+
+        } catch (e) {
+            console.error('BCCoupons error:', e);
+            req.error(500, 'Failed to fetch coupons from BigCommerce');
+        }
+    });
 });
-  // const { Coupons } = this.entities;
-  // this.before(['CREATE','UPDATE'], 'Coupons', (req) => {
-  //   const { StartDate, EndDate } = req.data;
-  //   if (StartDate && EndDate && new Date(EndDate) < new Date(StartDate)) {
-  //     req.error(400, 'EndDate must be after StartDate');
-  //   }
-  // });
-
-  // Example custom action (optional)
-  // this.on('deactivate', 'CouponsMap', async req => {
-  //   const id = req.data.ID;
-  //   await UPDATE(Coupons).set({ IsActive: false }).where({ ID: id });
-  //   return { success: true };
-  // });
-
-
-// Expose a custom action to fetch coupons from BigCommerce
-//   this.on("getBigCommCoupons", async (req) => {
-//     const { orderId } = req.data;
-
-//     const storeHash = process.env.BC_STORE_HASH;
-//     const token = process.env.BC_ACCESS_TOKEN;
-//     const clientId = process.env.BC_CLIENT_ID;
-
-//     try {
-//       const response = await axios.get(
-//         `https://api.bigcommerce.com/stores/${storeHash}/v2/orders/${orderId}/coupons`,
-//         {
-//           headers: {
-//             "X-Auth-Token": token,
-//             "X-Auth-Client": clientId,
-//             "Accept": "application/json"
-//           }
-//         }
-//       );
-
-//       const coupons = response.data.map(c => ({
-//         APIName: "BigCommerce",
-//         BigCommCoupon: c.code,
-//         SAPCoupon: "",  // can map later if needed
-//         SKU: "",
-//         MaxQuan: c.discounted_items_count || 0,
-//         IsActive: true,
-//         StartDate: new Date().toISOString().split("T")[0],
-//         EndDate: new Date().toISOString().split("T")[0],
-//         Description: c.name
-//       }));
-
-//       return coupons;
-
-//     } catch (err) {
-//       console.error("BigCommerce API error:", err.message);
-//       req.error(500, "Failed to fetch coupons from BigCommerce.");
-//     }
-//   });
-
-
-// });

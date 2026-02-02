@@ -1,0 +1,51 @@
+{
+  "xsappname": "couponmap-auth",
+  "tenant-mode": "dedicated",
+
+  "scopes": [   
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Full CRUD access to Coupons (GET, POST, PUT, DELETE)"
+    },
+    {
+   "name": "$XSAPPNAME.BigCommStAdmin",
+   "description": "Full admin access to BigComm Stores"
+    }
+  ],
+
+  "role-templates": [  
+    {
+      "name": "RC_RO_BigCommDtcCouponMapAdmin",
+      "description": "Administrator role with full CRUD access",
+      "scope-references": [
+        "$XSAPPNAME.Admin"
+      ]
+    },
+    {
+   "name": "RC_RO_BigCommDtcStoresAdminIT",
+   "description": "BigComm Store Admin Role",
+   "scope-references": [
+    "$XSAPPNAME.BigCommStAdmin"
+   ]
+  }
+  ],
+
+  "role-collections": [   
+    {
+      "name": "RC_RO_BigCommDtcCouponMapAdmin",
+      "description": "Role collection for coupon map admins (full CRUD)",
+      "role-template-references": [
+        "$XSAPPNAME.RC_RO_BigCommDtcCouponMapAdmin"
+      ]
+    },
+    {
+   "name": "RC_RO_BigCommDtcStoresAdminIT",
+   "description": "BigComm Store Admin Role",
+   "role-template-references": [
+    "$XSAPPNAME.RC_RO_BigCommDtcStoresAdminIT"
+   ]
+  }
+  ],
+
+  "attributes": []
+}

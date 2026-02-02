@@ -1,2 +1,0 @@
-sap.ui.define(["sap/fe/test/ListReport"],function(t){"use strict";var o={actions:{},assertions:{}};return new t({appId:"ro.dtc.couponsapp",componentId:"CouponsMapList",contextPath:"/CouponsMap"},o)});
-//# sourceMappingURL=CouponsMapList.js.map

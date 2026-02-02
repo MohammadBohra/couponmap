@@ -1,7 +1,7 @@
 {
   "_version": "1.76.0",
   "sap.app": {
-    "id": "ro.dtc.couponsapp",
+    "id": "bigcomdtc_couponmap",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -17,11 +17,23 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/catalog/",
+        "uri": "catalog/",
         "type": "OData",
         "settings": {
           "annotations": [],
           "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "coupons-app-display": {
+          "semanticObject": "coupons_app",
+          "action": "display",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
         }
       }
     }
@@ -60,7 +72,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "ro.dtc.couponsapp.i18n.i18n"
+          "bundleName": "bigcomdtc_couponmap.i18n.i18n"
         }
       },
       "": {
@@ -114,7 +126,7 @@
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
                     "type": "ResponsiveTable",
-                    "showRowCount": true                    
+                    "showRowCount": true
                   }
                 }
               }
@@ -138,5 +150,9 @@
   "sap.fiori": {
     "registrationIds": [],
     "archeType": "transactional"
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "couponmap.service"
   }
 }

@@ -1,176 +1,120 @@
 using CouponsMapService as service from '../srv/couponmap-service';
 
 annotate service.CouponsMap with @(
+    
+    UI.FieldGroup #CouponDetails : {
+        $Type: 'UI.FieldGroupType',
+        Data: [
+          { Value : APIName },
+          { Value : Description },
+         
+          { Value : BigCommCode },
+          { Value : SAPCoupon },
+          
+          //{ Value : BigCommCoupon }
+          
+        ]
+    },
     UI.FieldGroup #GeneratedGroup : {
         $Type : 'UI.FieldGroupType',
         Data : [
-            {
-                $Type : 'UI.DataField',
-                Label : 'APIName',
-                Value : APIName,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'BigCommCoupon',
-                Value : BigCommCoupon,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'SAPCoupon',
-                Value : SAPCoupon,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'SKU',
-                Value : SKU,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'MaxQuan',
-                Value : MaxQuan,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'IsActive',
-                Value : IsActive,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'StartDate',
-                Value : StartDate,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'EndDate',
-                Value : EndDate,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'Description',
-                Value : Description,
-            },
+        //{ Value : StoreHash },        
+        { Value : SKU },
+        { Value : MaxQuan },  
+
+        { Value : StartDate },
+        { Value : EndDate },
+
+        { Value : IsActive }
         ],
     },
     UI.Facets : [
+        
+        {
+            $Type: 'UI.ReferenceFacet',
+            ID: 'CouponDetails',
+            Label: 'Coupon Details',
+            Target: '@UI.FieldGroup#CouponDetails'
+        },
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'GeneratedFacet1',
-            Label : 'General Information',
+            Label : 'Other Details',
             Target : '@UI.FieldGroup#GeneratedGroup',
-        },
+        }
     ],
     UI.LineItem : [
-        {
-            $Type : 'UI.DataField',
-            Label : 'APIName',
-            Value : APIName,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'BigCommCoupon',
-            Value : BigCommCoupon,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'SAPCoupon',
-            Value : SAPCoupon,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'SKU',
-            Value : SKU,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'MaxQuan',
-            Value : MaxQuan,
-        },
+        //{ Value : StoreHash },
+        { Value : APIName },
+        { Value : BigCommCode },        
+        { Value : SAPCoupon },
+        { Value : SKU },
+        { Value : MaxQuan },
+        { Value : IsActive },
+        { Value : StartDate },
+        { Value : EndDate },
+        { Value : Description },
+        { Value : BigCommCoupon }
     ],
     UI.SelectionFields: [
     APIName,
-    BigCommCoupon,
+    BigCommCode,
     SAPCoupon,
     SKU
   ]
 );
 
 annotate service.CouponsMap with {
-
-    
-    
-  BigCommCoupon @(Common : {
-            ValueList      : {
-                Label : 'Big Comm Coupon',
-                CollectionPath : 'BCCoupons',
-                Parameters     : [
-            {
-                $Type             : 'Common.ValueListParameterInOut',
-                LocalDataProperty : name,
-                ValueListProperty : 'name',
-                
-            }
-            ]
-    //         Parameters: [
-    //     { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'code' },
-    //     { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'name' }
-    //   ]
-        }       
-    });
-
-    APIName @(Common : {
-            ValueList      : {
-                Label : 'API Name',
-                CollectionPath : 'CouponsMap',
-                Parameters     : [
-            {
-                $Type             : 'Common.ValueListParameterInOut',
-                LocalDataProperty : APIName,
-                ValueListProperty : 'APIName'
-            }
-            ]
-        }       
-    });
-
-    SAPCoupon @(Common : {
-            ValueList      : {
-                Label : 'SAP Coupon',
-                CollectionPath : 'CouponsMap',
-                Parameters     : [
-            {
-                $Type             : 'Common.ValueListParameterInOut',
-                LocalDataProperty : SAPCoupon,
-                ValueListProperty : 'SAPCoupon'
-            }
-            ]
-        }       
-    });
-
-    SKU @(Common : {
-            ValueList      : {
-                Label : 'SKU',
-                CollectionPath : 'CouponsMap',
-                Parameters     : [
-            {
-                $Type             : 'Common.ValueListParameterInOut',
-                LocalDataProperty : SKU,
-                ValueListProperty : 'SKU'
-            }
-            ]
-        }       
-    });  
   
+    BigCommCode @(
+    Common.ValueList: {
+      Label: 'BigComm Coupon',
+      CollectionPath: 'BCCoupons',
+      Parameters: [
+        {
+          // dependency: APIName must be passed as input
+          $Type: 'Common.ValueListParameterIn',
+          LocalDataProperty: APIName,
+          ValueListProperty: 'APIName'
+        },
+        // {
+        //   $Type: 'Common.ValueListParameterIn',
+        //   LocalDataProperty: StoreHash,
+        //   ValueListProperty: 'StoreHash'
+        // },
+        {
+          $Type: 'Common.ValueListParameterInOut',
+          LocalDataProperty: BigCommCode,
+          ValueListProperty: 'BigCommCode'
+        },
+        {
+          $Type: 'Common.ValueListParameterOut',
+          LocalDataProperty: BigCommCoupon,
+          ValueListProperty: 'BigCommCoupon'
+        }
+      ]
+    }
+  );
+
+
+  APIName @(
+    Common.ValueList: {
+      Label: 'Store',
+      CollectionPath: 'Stores',
+      Parameters: [
+        
+        // {
+        //   $Type: 'Common.ValueListParameterInOut',
+        //   LocalDataProperty: StoreHash,
+        //   ValueListProperty: 'StoreHash'
+        // },
+        {
+          $Type: 'Common.ValueListParameterInOut',
+          LocalDataProperty: APIName,
+          ValueListProperty: 'APIName'
+        }
+      ]
+    },
+    Common.ValueListWithFixedValues: true
+  );
 };
-
-
-// annotate service.CouponsMap with {
-//   BigCommCoupon @Common.ValueList: {
-//     CollectionPath: 'CouponsMap',
-//     Parameters: [
-//       {
-//         $Type: 'Common.ValueListParameterOut',
-//         LocalDataProperty: BigCommCoupon,
-//         ValueListProperty: BigCommCoupon
-//       }
-//     ]
-//   };
-// };

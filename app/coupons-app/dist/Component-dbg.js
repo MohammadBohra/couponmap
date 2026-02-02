@@ -3,7 +3,7 @@ sap.ui.define(
     function (Component) {
         "use strict";
 
-        return Component.extend("ro.dtc.couponsapp.Component", {
+        return Component.extend("bigcomdtc_couponmap.Component", {
             metadata: {
                 manifest: "json"
             }

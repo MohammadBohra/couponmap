@@ -1,2 +1,0 @@
-sap.ui.define(["sap/fe/test/JourneyRunner","ro/dtc/couponsapp/test/integration/pages/CouponsMapList","ro/dtc/couponsapp/test/integration/pages/CouponsMapObjectPage"],function(e,p,t){"use strict";var o=new e({launchUrl:sap.ui.require.toUrl("ro/dtc/couponsapp")+"/test/flp.html#app-preview",pages:{onTheCouponsMapList:p,onTheCouponsMapObjectPage:t},async:true});return o});
-//# sourceMappingURL=JourneyRunner.js.map

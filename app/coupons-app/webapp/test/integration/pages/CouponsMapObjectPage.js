@@ -8,7 +8,7 @@ sap.ui.define(['sap/fe/test/ObjectPage'], function(ObjectPage) {
 
     return new ObjectPage(
         {
-            appId: 'ro.dtc.couponsapp',
+            appId: 'bigcomdtc_couponmap',
             componentId: 'CouponsMapObjectPage',
             contextPath: '/CouponsMap'
         },
