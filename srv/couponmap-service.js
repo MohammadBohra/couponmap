@@ -1,18 +1,77 @@
 const cds = require('@sap/cds');
 const fetch = require('node-fetch'); // Node >=18 has fetch globally
 
-module.exports = cds.service.impl(async function () {    
+module.exports = cds.service.impl(async function () {
     const BigCommerceAPI = await cds.connect.to("BigCommerceAPI");   // <== destination client
 
     const { Stores, CouponsMap } = cds.entities('CouponsMapService');
     // -------------------------
     // Authorization for Coupons
-    // -------------------------
-    this.before(['CREATE', 'UPDATE', 'DELETE'], 'CouponsMap', (req) => {
+    // -------------------------    
+
+    this.before(['CREATE', 'UPDATE'], 'CouponsMap', async (req) => {
+        if (!req.user.is('Admin')) {
+            req.reject(403, 'You are not authorized to modify coupon data.');
+        }
+
+        const { APIName, BigCommCode } = req.data;
+
+        const exists = await SELECT.one
+            .from('ro.bigcomm.dtc.Coupons')
+            .where({ APIName, BigCommCode });
+
+        if (exists) {
+            req.error(
+                409,
+                `A record with store name '${APIName}' and BigCommerce coupon '${BigCommCode}' already exists. Please use a different coupon to continue.`
+            );
+        }
+    });
+
+    this.before(['DELETE'], 'CouponsMap', async (req) => {
         if (!req.user.is('Admin')) {
             req.reject(403, 'You are not authorized to modify coupon data.');
         }
     });
+
+    this.before(['CREATE', 'UPDATE'], 'Stores', async (req) => {
+        if (!req.user.is('BigCommStAdmin')) {
+            req.reject(403, 'You are not authorized to modify stores data.');
+        }
+
+        const { StoreHash,APIName} = req.data;
+
+        const exists = await SELECT.one
+            .from('ro.bigcomm.dtc.Stores')
+            .where({ StoreHash});
+
+        if (exists) {
+            req.error(
+                409,
+                `A record with store hash '${StoreHash}' already exists. Please use a different store hash continue.`
+            );
+        }
+
+        // const apinameexists = await SELECT.one
+        //     .from('ro.bigcomm.dtc.Stores')
+        //     .where({ APIName});
+
+        // if (apinameexists) {
+        //     req.error(
+        //         409,
+        //         `A record with Store Name '${APIName}' already exists. Please use a different Store Name to continue.`
+        //     );
+        // }
+    });
+
+     this.before('DELETE', 'Stores', async (req) => {
+        if (!req.user.is('BigCommStAdmin')) {
+            req.reject(403, 'You are not authorized to modify stores data.');
+        }
+    });
+
+    
+
 
     // -------------------------
     // Feature Control for Fiori
@@ -21,9 +80,9 @@ module.exports = cds.service.impl(async function () {
         const isAdmin = req.user.is('Admin');
         const isITAdmin = req.user.is('BigCommStAdmin');
         return [{
-        operationHidden: !isAdmin,
-        itadmin: !isITAdmin
-    }]
+            operationHidden: !isAdmin,
+            itadmin: !isITAdmin
+        }]
     });
 
     // -------------------------
@@ -46,24 +105,24 @@ module.exports = cds.service.impl(async function () {
             }
 
             // Look up StoreHash based on APIName (which maps to WebServiceID)
-            const store = await SELECT.one.from(Stores).where({ APIName: APIName });            
+            const store = await SELECT.one.from(Stores).where({ APIName: APIName });
             if (!store) {
                 return req.reject(404, `No store found for APIName '${APIName}'`);
             }
 
-            
+
 
             const storeHash = store.StoreHash;  // dynamic
             const authToken = store.AuthToken;  // dynamic
 
             const response = await BigCommerceAPI.send({
-            method: "GET",
-            path: `/stores/${storeHash}/v2/coupons`,
-            headers: {
-                "X-Auth-Token": authToken,
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            }
+                method: "GET",
+                path: `/stores/${storeHash}/v2/coupons`,
+                headers: {
+                    "X-Auth-Token": authToken,
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                }
             });
             if (!response) {
                 const errorText = await response.text();
@@ -82,9 +141,10 @@ module.exports = cds.service.impl(async function () {
                 APIName: store.APIName
             }));
 
-        } catch (e) {
+        } catch (e) {            
             console.error('BCCoupons error:', e);
-            req.error(500, 'Failed to fetch coupons from BigCommerce');
+            return [];
+            return req.error(500, 'Failed to fetch coupons from BigCommerce.');
         }
     });
 });

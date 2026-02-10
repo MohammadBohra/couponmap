@@ -38,6 +38,16 @@
       }
     }
   },
+  "sap.fe": {
+    "app": {
+      "share": {
+        "showSendEmail": false,
+        "teams": {
+          "showMsTeamsOptions": false
+        }
+      }
+    }
+  },
   "sap.ui": {
     "technology": "UI5",
     "icons": {
@@ -126,7 +136,8 @@
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
                     "type": "ResponsiveTable",
-                    "showRowCount": true
+                    "showRowCount": true,
+                    "showSendMail":false
                   }
                 }
               }

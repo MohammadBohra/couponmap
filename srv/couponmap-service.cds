@@ -1,6 +1,6 @@
 using ro.bigcomm.dtc as db from '../db/schema';
 
-service CouponsMapService @(path: '/catalog') {
+service CouponsMapService @(path: '/catalog') @(requires: 'authenticated-user') {
  @odata.draft.enabled
   entity CouponsMap as projection on db.Coupons;
   @odata.draft.enabled

@@ -39,6 +39,16 @@
       }
     }
   },
+  "sap.fe": {
+    "app": {
+      "share": {
+        "showSendEmail": false,
+        "teams": {
+          "showMsTeamsOptions": false
+        }
+      }
+    }
+  },
   "sap.ui": {
     "technology": "UI5",
     "icons": {

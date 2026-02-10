@@ -7,11 +7,13 @@ annotate service.CouponsMap with @(
         Data: [
           { Value : APIName },
           { Value : Description },
+        //  { Value : StoreHash },
          
           { Value : BigCommCode },
           { Value : SAPCoupon },
           
-          //{ Value : BigCommCoupon }
+          { Value : BigCommCoupon,
+            @Common.FieldControl : #ReadOnly}
           
         ]
     },
@@ -98,16 +100,11 @@ annotate service.CouponsMap with {
 
 
   APIName @(
+    Common.ValueListWithFixedValues: true,
     Common.ValueList: {
       Label: 'Store',
       CollectionPath: 'Stores',
       Parameters: [
-        
-        // {
-        //   $Type: 'Common.ValueListParameterInOut',
-        //   LocalDataProperty: StoreHash,
-        //   ValueListProperty: 'StoreHash'
-        // },
         {
           $Type: 'Common.ValueListParameterInOut',
           LocalDataProperty: APIName,
@@ -115,6 +112,19 @@ annotate service.CouponsMap with {
         }
       ]
     },
-    Common.ValueListWithFixedValues: true
+    
   );
 };
+
+annotate service.CouponsMap with @(
+    Capabilities: {
+        FilterRestrictions: {
+            FilterExpressionRestrictions: [
+                {
+                    Property: 'APIName',
+                    AllowedExpressions: 'SingleValue'
+                }
+            ]
+        }
+    }
+);

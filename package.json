@@ -33,6 +33,28 @@
       "uaa": {
         "kind": "xsuaa"
       },
+      "auth": {
+        "[development]": {
+          "kind": "mocked",
+          "users": {
+            "admin": {
+              "password": "admin",
+              "roles": [
+                "Admin",
+                "BigCommStAdmin"
+              ],
+              "scopes": [
+                "couponmap-auth.Admin",
+                "couponmap-auth.BigCommStAdmin"
+              ]
+            }
+           
+          }
+        },
+        "[production]": {
+          "kind": "xsuaa"
+        }
+      },
       "db": {
         "kind": "hana",
         "model": [
@@ -46,9 +68,7 @@
           "destination": "BigCommerceAPI"
         }
       },
-      "[production]": {
-        "auth": "xsuaa"
-      },
+     
       "destinations": true,
       "html5-repo": true,
       "workzone": true
