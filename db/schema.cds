@@ -7,10 +7,10 @@ using {
 
 entity Coupons : managed {
   
-  key ID            : UUID        @title: 'Coupon ID';
-      StoreHash     : String(25)  @UI.HiddenFilter: true @UI.Hidden: true;
-      APIName       : String(25)  @title: 'API Name' @mandatory : true;
-      BigCommCode   : String(25)  @title: 'BigComm Coupon' @mandatory : true;
+      // key ID            : UUID        @title: 'Coupon ID';
+      StoreHash     : String(25)  @UI.HiddenFilter: false @UI.Hidden: true;
+      key APIName       : String(25)  @title: 'API Name' @mandatory : false;
+      key BigCommCode   : String(25)  @title: 'BigComm Coupon' @mandatory : false;
       BigCommCoupon : String(25)  @title: 'BigComm Coupon Name';
       SAPCoupon     : String(10)  @title: 'SAP Coupon';
       SKU           : String(20)  @title          : 'SKU Number'  @mandatory  default '__ALL_SKUS__';
@@ -23,9 +23,9 @@ entity Coupons : managed {
 
 
 entity Stores {
-      key ID : UUID @title: 'ID' @default: cuid;
-      StoreHash    : String(40)  @title: 'Store Hash'  @mandatory;
-      APIName      : String(25)  @title: 'Store Name'  @mandatory;
+      // key ID : UUID @title: 'ID' @default: cuid;
+      key StoreHash    : String(40)  @title: 'Store Hash';
+      APIName      : String(25)  @title: 'Store Name';
       WebServiceID : String(20)  @title: 'WebService ID';
       SoldToParty  : String(20)  @title: 'Sold To Party';
       ShipToParty  : String(20)  @title: 'Ship To Party';

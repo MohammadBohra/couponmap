@@ -9,7 +9,7 @@ module.exports = cds.service.impl(async function () {
     // Authorization for Coupons
     // -------------------------    
 
-    this.before(['CREATE', 'UPDATE'], 'CouponsMap', async (req) => {
+    this.before(['CREATE'], 'CouponsMap', async (req) => {
         if (!req.user.is('Admin')) {
             req.reject(403, 'You are not authorized to modify coupon data.');
         }
@@ -34,7 +34,7 @@ module.exports = cds.service.impl(async function () {
         }
     });
 
-    this.before(['CREATE', 'UPDATE'], 'Stores', async (req) => {
+    this.before(['CREATE'], 'Stores', async (req) => {
         if (!req.user.is('BigCommStAdmin')) {
             req.reject(403, 'You are not authorized to modify stores data.');
         }
@@ -93,19 +93,30 @@ module.exports = cds.service.impl(async function () {
             const where = req.query?.SELECT?.where;
             let APIName;
 
+            // if (where) {
+            //     const apiNameIndex = where.findIndex(c => c.ref && c.ref[0] === 'APIName');
+            //     if (apiNameIndex !== -1 && where[apiNameIndex + 2]?.val) {
+            //         APIName = where[apiNameIndex + 2].val;
+            //     }
+            // }
+            let StoreHash;
             if (where) {
-                const apiNameIndex = where.findIndex(c => c.ref && c.ref[0] === 'APIName');
+                const apiNameIndex = where.findIndex(c => c.ref && c.ref[0] === 'StoreHash');
                 if (apiNameIndex !== -1 && where[apiNameIndex + 2]?.val) {
-                    APIName = where[apiNameIndex + 2].val;
+                    StoreHash = where[apiNameIndex + 2].val;
                 }
             }
 
-            if (!APIName) {
+            // if (!APIName) {
+            //     return req.reject(400, 'Please provide an APIName filter.');
+            // }
+
+            if (!StoreHash) {
                 return req.reject(400, 'Please provide an APIName filter.');
             }
 
             // Look up StoreHash based on APIName (which maps to WebServiceID)
-            const store = await SELECT.one.from(Stores).where({ APIName: APIName });
+            const store = await SELECT.one.from(Stores).where({ StoreHash: StoreHash });
             if (!store) {
                 return req.reject(404, `No store found for APIName '${APIName}'`);
             }

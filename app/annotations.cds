@@ -60,6 +60,7 @@ annotate service.CouponsMap with @(
     ],
     UI.SelectionFields: [
     APIName,
+    StoreHash,
     BigCommCode,
     SAPCoupon,
     SKU
@@ -73,17 +74,17 @@ annotate service.CouponsMap with {
       Label: 'BigComm Coupon',
       CollectionPath: 'BCCoupons',
       Parameters: [
+        // {
+        //   // dependency: APIName must be passed as input
+        //   $Type: 'Common.ValueListParameterIn',
+        //   LocalDataProperty: APIName,
+        //   ValueListProperty: 'APIName'
+        // },
         {
-          // dependency: APIName must be passed as input
           $Type: 'Common.ValueListParameterIn',
           LocalDataProperty: APIName,
-          ValueListProperty: 'APIName'
+          ValueListProperty: 'StoreHash'
         },
-        // {
-        //   $Type: 'Common.ValueListParameterIn',
-        //   LocalDataProperty: StoreHash,
-        //   ValueListProperty: 'StoreHash'
-        // },
         {
           $Type: 'Common.ValueListParameterInOut',
           LocalDataProperty: BigCommCode,
@@ -106,14 +107,17 @@ annotate service.CouponsMap with {
       CollectionPath: 'Stores',
       Parameters: [
         {
-          $Type: 'Common.ValueListParameterInOut',
-          LocalDataProperty: APIName,
-          ValueListProperty: 'APIName'
-        }
+        $Type: 'Common.ValueListParameterInOut',
+        LocalDataProperty: StoreHash,
+        ValueListProperty: 'APIName'
+      }
       ]
     },
-    
   );
+
+
+  
+
 };
 
 annotate service.CouponsMap with @(
