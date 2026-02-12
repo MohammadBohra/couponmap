@@ -93,30 +93,30 @@ module.exports = cds.service.impl(async function () {
             const where = req.query?.SELECT?.where;
             let APIName;
 
-            // if (where) {
-            //     const apiNameIndex = where.findIndex(c => c.ref && c.ref[0] === 'APIName');
-            //     if (apiNameIndex !== -1 && where[apiNameIndex + 2]?.val) {
-            //         APIName = where[apiNameIndex + 2].val;
-            //     }
-            // }
-            let StoreHash;
             if (where) {
-                const apiNameIndex = where.findIndex(c => c.ref && c.ref[0] === 'StoreHash');
+                const apiNameIndex = where.findIndex(c => c.ref && c.ref[0] === 'APIName');
                 if (apiNameIndex !== -1 && where[apiNameIndex + 2]?.val) {
-                    StoreHash = where[apiNameIndex + 2].val;
+                    APIName = where[apiNameIndex + 2].val;
                 }
             }
-
-            // if (!APIName) {
-            //     return req.reject(400, 'Please provide an APIName filter.');
+            // let StoreHash;
+            // if (where) {
+            //     const apiNameIndex = where.findIndex(c => c.ref && c.ref[0] === 'StoreHash');
+            //     if (apiNameIndex !== -1 && where[apiNameIndex + 2]?.val) {
+            //         StoreHash = where[apiNameIndex + 2].val;
+            //     }
             // }
 
-            if (!StoreHash) {
+            if (!APIName) {
                 return req.reject(400, 'Please provide an APIName filter.');
             }
 
+            // if (!StoreHash) {
+            //     return req.reject(400, 'Please provide an APIName filter.');
+            // }
+
             // Look up StoreHash based on APIName (which maps to WebServiceID)
-            const store = await SELECT.one.from(Stores).where({ StoreHash: StoreHash });
+            const store = await SELECT.one.from(Stores).where({ APIName: APIName });
             if (!store) {
                 return req.reject(404, `No store found for APIName '${APIName}'`);
             }

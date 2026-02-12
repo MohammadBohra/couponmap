@@ -12,11 +12,11 @@ target/
 # Web IDE, App Studio
 .che/
 .gen/
+*test/
+/dist
 
 # MTA
 *_mta_build_tmp
-*.mtar
-mta_archives/
 
 # Other
 .DS_Store
@@ -35,3 +35,9 @@ mta_archives/
 
 # auto generated wildcard
 .env
+app/bigstores/dist/bigstores.zip
+app/bigstores/dist/bigstores.zip
+app/bigstores/dist/sap-ui-cachebuster-info.json
+app/bigstores/dist/bigstores.zip
+app/bigstores/dist/Component-preload.js
+app/bigstores/dist/manifest.json

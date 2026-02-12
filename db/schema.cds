@@ -12,7 +12,7 @@ entity Coupons : managed {
       key APIName       : String(25)  @title: 'API Name' @mandatory : false;
       key BigCommCode   : String(25)  @title: 'BigComm Coupon' @mandatory : false;
       BigCommCoupon : String(25)  @title: 'BigComm Coupon Name';
-      SAPCoupon     : String(10)  @title: 'SAP Coupon';
+      SAPCoupon     : String(10)  @title: 'SAP Coupon' @mandatory : true;
       SKU           : String(20)  @title          : 'SKU Number'  @mandatory  default '__ALL_SKUS__';
       MaxQuan       : Integer     @title: 'Maximum Quantity';
       IsActive      : Boolean     @title: 'Active' default true;
@@ -25,12 +25,12 @@ entity Coupons : managed {
 entity Stores {
       // key ID : UUID @title: 'ID' @default: cuid;
       key StoreHash    : String(40)  @title: 'Store Hash';
-      APIName      : String(25)  @title: 'Store Name';
-      WebServiceID : String(20)  @title: 'WebService ID';
+      APIName      : String(25)  @title: 'Store Name' @mandatory : true;
+      WebServiceID : String(20)  @title: 'WebService ID' @mandatory : true;
       SoldToParty  : String(20)  @title: 'Sold To Party';
       ShipToParty  : String(20)  @title: 'Ship To Party';
       BillToParty  : String(20)  @title: 'Bill To Party';
-      AuthToken    : String(40)  @title: 'Auth Token';
+      AuthToken    : String(40)  @title: 'Auth Token' @mandatory : true;
       URL          : String(50)  @title: 'URL';
       SalesOrg     : String(4)   @title: 'Sales Organization';
       DistChannel  : String(2)   @title: 'Distribution Channel';

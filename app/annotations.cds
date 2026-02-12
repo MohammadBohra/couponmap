@@ -83,7 +83,7 @@ annotate service.CouponsMap with {
         {
           $Type: 'Common.ValueListParameterIn',
           LocalDataProperty: APIName,
-          ValueListProperty: 'StoreHash'
+          ValueListProperty: 'APIName'
         },
         {
           $Type: 'Common.ValueListParameterInOut',
@@ -108,7 +108,7 @@ annotate service.CouponsMap with {
       Parameters: [
         {
         $Type: 'Common.ValueListParameterInOut',
-        LocalDataProperty: StoreHash,
+        LocalDataProperty: APIName,
         ValueListProperty: 'APIName'
       }
       ]
