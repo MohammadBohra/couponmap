@@ -25,8 +25,20 @@ module.exports = cds.service.impl(async function () {
                 409,
                 `A record with store name '${APIName}' and BigCommerce coupon '${BigCommCode}' already exists. Please use a different coupon to continue.`
             );
+            return;
         }
+
+        const store = await SELECT.one
+            .from('ro.bigcomm.dtc.Stores')
+            .where({ APIName });
+        // Populate StoreHash dynamically
+        req.data.StoreHash = store.StoreHash;
+
+
+
     });
+
+   
 
     this.before(['DELETE'], 'CouponsMap', async (req) => {
         if (!req.user.is('Admin')) {

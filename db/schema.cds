@@ -8,7 +8,7 @@ using {
 entity Coupons : managed {
   
       // key ID            : UUID        @title: 'Coupon ID';
-      StoreHash     : String(25)  @UI.HiddenFilter: false @UI.Hidden: true;
+      StoreHash     : String(25)  @title: 'Store Hash' @UI.HiddenFilter: false @UI.Hidden: true;
       key APIName       : String(25)  @title: 'API Name' @mandatory : false;
       key BigCommCode   : String(25)  @title: 'BigComm Coupon' @mandatory : false;
       BigCommCoupon : String(25)  @title: 'BigComm Coupon Name';

@@ -11,16 +11,17 @@ annotate service.CouponsMap with @(
          
           { Value : BigCommCode },
           { Value : SAPCoupon },
+          { Value : BigCommCoupon},
           
-          { Value : BigCommCoupon,
-            @Common.FieldControl : #ReadOnly}
+          // { Value : BigCommCoupon,
+          //   @Common.FieldControl : #ReadOnly}
           
         ]
     },
     UI.FieldGroup #GeneratedGroup : {
         $Type : 'UI.FieldGroupType',
         Data : [
-        //{ Value : StoreHash },        
+        { Value : StoreHash},        
         { Value : SKU },
         { Value : MaxQuan },  
 
@@ -46,7 +47,7 @@ annotate service.CouponsMap with @(
         }
     ],
     UI.LineItem : [
-        //{ Value : StoreHash },
+        { Value : StoreHash },
         { Value : APIName },
         { Value : BigCommCode },        
         { Value : SAPCoupon },
