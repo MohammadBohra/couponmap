@@ -60,7 +60,7 @@ module.exports = cds.service.impl(async function () {
         if (exists) {
             req.error(
                 409,
-                `A record with store hash '${StoreHash}' already exists. Please use a different store hash continue.`
+                `A record with store hash '${StoreHash}' already exists. Please use a different store hash to continue.`
             );
         }
 

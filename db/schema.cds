@@ -8,10 +8,10 @@ using {
 entity Coupons : managed {
   
       // key ID            : UUID        @title: 'Coupon ID';
-      StoreHash     : String(25)  @title: 'Store Hash' @UI.HiddenFilter: false @UI.Hidden: true;
+      StoreHash     : String(40)  @title: 'Store Hash' @UI.HiddenFilter: false @UI.Hidden: true;
       key APIName       : String(25)  @title: 'API Name' @mandatory : false;
-      key BigCommCode   : String(25)  @title: 'BigComm Coupon' @mandatory : false;
-      BigCommCoupon : String(25)  @title: 'BigComm Coupon Name';
+      key BigCommCode   : String(50)  @title: 'BigComm Coupon' @mandatory : false;
+      BigCommCoupon : String(100)  @title: 'BigComm Coupon Name';
       SAPCoupon     : String(10)  @title: 'SAP Coupon' @mandatory : true;
       SKU           : String(20)  @title          : 'SKU Number'  @mandatory  default '__ALL_SKUS__';
       MaxQuan       : Integer     @title: 'Maximum Quantity';
